@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 public class Status {
 	private String status;
 	private String downloadLink="NOT_READY";
-
 	private String title;
 	
 	

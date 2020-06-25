@@ -44,13 +44,13 @@ public class YoutubeDownloadListener implements OnYoutubeDownloadListener {
 	@Override
 	public void onDownloading(int progress) {
 		this.progress = progress;
+		status.setTitle(fileName);
 		
 	}
 
 	@Override
 	public void onFinished(File file) {
 		this.file = file;
-		status.setTitle(fileName);
 		status.setDownloadLink(baseURl+"/download/"+vid);
 		
 	}

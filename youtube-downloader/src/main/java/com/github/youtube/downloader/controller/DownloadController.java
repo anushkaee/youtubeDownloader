@@ -26,6 +26,7 @@ import com.github.youtube.downloader.YoutubeException;
 import com.github.youtube.downloader.model.InitStatus;
 import com.github.youtube.downloader.model.Status;
 import com.github.youtube.downloader.service.DownloadService;
+import com.github.youtube.downloader.service.FileTypes;
 
 @Controller
 public class DownloadController {
@@ -50,9 +51,16 @@ public class DownloadController {
 				.body(resource);
 	}
 
-	@RequestMapping(path = "/initdownload/{vid}", method = RequestMethod.GET)
-	public ResponseEntity initDownload(@PathVariable("vid") String vid) throws IOException, YoutubeException {
-		InitStatus initStatus = downloadService.downloadMp4(vid);
+	@RequestMapping(path = "/initdownload/{fileType}/{vid}", method = RequestMethod.POST)
+	public ResponseEntity initDownload(@PathVariable FileTypes fileType,
+			@PathVariable("vid") String vid) throws IOException, YoutubeException {
+		InitStatus initStatus = null;
+		if (FileTypes.MP4.equals(fileType)) {
+			initStatus = downloadService.downloadMp4(vid);
+		} else if (FileTypes.MP3.equals(fileType)) {
+			initStatus = downloadService.downloadMp3(vid);
+		}
+		 
 		ResponseEntity responseEntity = new ResponseEntity(initStatus,HttpStatus.CREATED);
 
 		return responseEntity;
