@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,6 +39,7 @@ public class FileCleaner implements Runnable {
 	private DownloadService downloadService;
 	
 	private static Map<Long, String> deleteQue = new HashMap<>();
+	private static List<Long> deletedTimeStamps =new ArrayList<>();
 
 	public void addToDeleteQue(long time, String vid) {
 		deleteQue.put(time, vid);
@@ -96,9 +99,22 @@ public class FileCleaner implements Runnable {
 				if(fileMap.containsKey(v)) {
 					fileMap.remove(v);
 					System.out.println("Removing video from internal Queue: "+v);
+					deletedTimeStamps.add(k);
 				}
 			}		
 		});
-		deleteQue = new HashMap<>();		
+		clearDeleteQueue();		
+	}
+	
+	private void clearDeleteQueue() {
+	
+		deletedTimeStamps.forEach( t -> {
+			if(deleteQue.containsKey(t)) {
+				deleteQue.remove(t);
+				System.out.println("Removing video from delete Queue: "+t);
+			}
+		});
+		
+		deletedTimeStamps = new ArrayList<Long>();
 	}
 }
