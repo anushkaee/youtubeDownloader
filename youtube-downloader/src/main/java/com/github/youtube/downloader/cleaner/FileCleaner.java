@@ -36,7 +36,7 @@ public class FileCleaner implements Runnable {
 	@Autowired
 	private DownloadService downloadService;
 	
-	private Map<Long, String> deleteQue = new HashMap<>();
+	private static Map<Long, String> deleteQue = new HashMap<>();
 
 	public void addToDeleteQue(long time, String vid) {
 		deleteQue.put(time, vid);
@@ -95,6 +95,7 @@ public class FileCleaner implements Runnable {
 			if (k < purgeTime) {
 				if(fileMap.containsKey(v)) {
 					fileMap.remove(v);
+					System.out.println("Removing video from internal Queue: "+v);
 				}
 			}		
 		});

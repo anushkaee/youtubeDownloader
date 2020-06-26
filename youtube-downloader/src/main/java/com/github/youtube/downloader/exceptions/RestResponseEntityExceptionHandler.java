@@ -1,5 +1,7 @@
 package com.github.youtube.downloader.exceptions;
 
+import java.io.FileNotFoundException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
-	@ExceptionHandler(value = { NullPointerException.class })
+	@ExceptionHandler(value = { NullPointerException.class, FileNotFoundException.class })
 	protected ResponseEntity<Object> handleNullPointer(RuntimeException ex, WebRequest request) {
 		String bodyOfResponse = "Requested file not found!.";
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
