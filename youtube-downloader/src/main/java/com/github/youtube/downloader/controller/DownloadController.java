@@ -3,6 +3,7 @@ package com.github.youtube.downloader.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
@@ -42,9 +43,11 @@ public class DownloadController {
 		OnYoutubeDownloadListener listener = downloadService.getFile(vid);
 		File file = listener.getFile();
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		String fileName = listener.getFileName()+"."+listener.getExt();
+		fileName = URLEncoder.encode(fileName, "UTF-8").replace('+', '_');;
 		
 		HttpHeaders headers = new HttpHeaders(); headers.add(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename="+listener.getFileName()+"."+listener.getExt());
+				"attachment; filename="+fileName);
 
 		return ResponseEntity.ok()
 				.headers(headers)

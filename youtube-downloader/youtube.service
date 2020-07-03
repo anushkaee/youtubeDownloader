@@ -1,0 +1,14 @@
+Description=Starts yotube Api service
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/ec2-user/jdk/bin/java -jar /home/ec2-user/youtube-downloader-0.0.1-SNAPSHOT.jar --spring.config.location=/home/ec2-user/application.properties
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
